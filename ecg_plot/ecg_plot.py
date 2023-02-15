@@ -92,7 +92,6 @@ def plot_12(
 def plot(
         ecg, 
         sample_rate    = 500, 
-        title          = 'ECG 12', 
         lead_index     = lead_index, 
         lead_order     = None,
         style          = None,
@@ -138,8 +137,6 @@ def plot(
         top    = 1
         )
 
-    fig.suptitle(title)
-
     x_min = 0
     x_max = columns*secs
     y_min = row_height/4 - (rows/2)*row_height
@@ -167,7 +164,7 @@ def plot(
     ax.set_ylim(y_min,y_max)
     ax.set_xlim(x_min,x_max)
     ax.annotate(
-        annotation,
+        f"VRCardio vest 12-lead adaptation - {annotation}",
         xy=(0.1, 0.025), xycoords='axes fraction',
         xytext=(0, 0), textcoords='offset points',
         )
@@ -200,6 +197,8 @@ def plot(
                     )
     ax.xaxis.set_major_formatter(plt.NullFormatter())
     ax.yaxis.set_major_formatter(plt.NullFormatter())
+    ax.set_xlabel('25 mm/s')
+    ax.set_ylabel('1 mv/mm')
 
 def plot_1(ecg, sample_rate=500, title = 'ECG', fig_width = 15, fig_height = 2, line_w = 0.5, ecg_amp = 1.8, timetick = 0.2):
     """Plot multi lead ECG chart.
