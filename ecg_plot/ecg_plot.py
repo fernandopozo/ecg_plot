@@ -101,6 +101,7 @@ def plot(
         show_lead_name = True,
         show_grid      = True,
         show_separate_line  = True,
+        annotation=None,
         ):
     """Plot multi lead ECG chart.
     # Arguments
@@ -124,7 +125,7 @@ def plot(
     leads = len(lead_order)
     rows  = int(ceil(leads/columns))
     # display_factor = 2.5
-    display_factor = 1
+    display_factor = 1.25
     line_width = 0.5
     fig, ax = plt.subplots(figsize=(secs*columns * display_factor, rows * row_height / 5 * display_factor))
     display_factor = display_factor ** 0.5
@@ -154,18 +155,22 @@ def plot(
         color_line  = (0,0,0.7)
 
     if(show_grid):
-        ax.set_xticks(np.arange(x_min,x_max,0.2))    
+        ax.set_xticks(np.round(np.arange(x_min,x_max,0.2), 1))
         ax.set_yticks(np.arange(y_min,y_max,0.5))
-
         ax.minorticks_on()
         
         ax.xaxis.set_minor_locator(AutoMinorLocator(5))
 
         ax.grid(which='major', linestyle='-', linewidth=0.5 * display_factor, color=color_major)
         ax.grid(which='minor', linestyle='-', linewidth=0.5 * display_factor, color=color_minor)
-
+    
     ax.set_ylim(y_min,y_max)
     ax.set_xlim(x_min,x_max)
+    ax.annotate(
+        annotation,
+        xy=(0.1, 0.025), xycoords='axes fraction',
+        xytext=(0, 0), textcoords='offset points',
+        )
 
 
     for c in range(0, columns):
@@ -193,7 +198,8 @@ def plot(
                     linewidth=line_width * display_factor, 
                     color=color_line
                     )
-        
+    ax.xaxis.set_major_formatter(plt.NullFormatter())
+    ax.yaxis.set_major_formatter(plt.NullFormatter())
 
 def plot_1(ecg, sample_rate=500, title = 'ECG', fig_width = 15, fig_height = 2, line_w = 0.5, ecg_amp = 1.8, timetick = 0.2):
     """Plot multi lead ECG chart.
